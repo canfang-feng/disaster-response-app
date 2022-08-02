@@ -1,14 +1,14 @@
 # Disaster Response Pipeline Project
 
 ### Instructions:
-1. Run the following commands in the project's root directory to set up your database and model.
+Run the following commands in the project's root directory to set up the database, train and save model, finally run the web app
 
-    - To run ETL pipeline that cleans data and stores in database
+    - Step 1: to run ETL pipeline that cleans data and stores in database
         `python data/process_data.py data/disaster_messages.csv data/disaster_categories.csv data/DisasterResponse.db`
-    - To run ML pipeline that trains classifier and saves
-        `python models/train_classifier.py data/DisasterResponse.db models/classifier.pkl`
+    - Step 2: to run ML pipeline that trains classifier and saves
+        `python models/train_classifier.py --database_filepath data/DisasterResponse.db --model_filepath models/classifier.pkl`
+    - Step 3: to run the web app  
+        `python app/run.py`
+    - Step 4: go to http://0.0.0.0:3001/
 
-2. Run the following command in the app's directory to run your web app.
-    `python run.py`
 
-3. Go to http://0.0.0.0:3001/

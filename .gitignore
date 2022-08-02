@@ -2,3 +2,4 @@
 .vscode
 *.ipynb
 .DS_Store
+*.pkl

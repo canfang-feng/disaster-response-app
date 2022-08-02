@@ -1,4 +1,5 @@
 import sys
+import argparse
 from sqlalchemy import create_engine
 import pandas as pd
 import re
@@ -21,9 +22,6 @@ from sklearn.model_selection import GridSearchCV
 import warnings
 
 warnings.simplefilter("ignore")
-nltk.download("punkt")
-nltk.download("stopwords")
-nltk.download("wordnet")
 
 
 def load_data(database_filepath):
@@ -158,34 +156,57 @@ def save_model(model, model_filepath):
     return
 
 
+def create_parser() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(
+        formatter_class=argparse.ArgumentDefaultsHelpFormatter
+    )
+    parser.add_argument(
+        "--database_filepath",
+        required=True,
+        help="Filepath for accessing the database",
+    )
+    parser.add_argument(
+        "--model_filepath",
+        required=True,
+        help="Filepath for saving the model",
+    )
+    parser.add_argument(
+        "--tunning",
+        action="store_true",
+        help="Whether to tune the model or not",
+    )
+    return parser
+
+
 def main():
-    if len(sys.argv) == 3:
-        database_filepath, model_filepath = sys.argv[1:]
-        print("Loading data...\n    DATABASE: {}".format(database_filepath))
-        X, Y, category_names = load_data(database_filepath)
-        X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
+    args = create_parser().parse_args()
 
-        print("Building model...")
-        model = build_model()
+    database_filepath = args.database_filepath
+    model_filepath = args.model_filepath
+    if_tuning = args.tunning
 
-        print("Training model...")
-        model.fit(X_train, Y_train)
+    nltk.download("punkt")
+    nltk.download("stopwords")
+    nltk.download("wordnet")
 
-        print("Evaluating model...")
-        evaluate_model(model, X_test, Y_test, category_names)
+    print("Loading data...\n    DATABASE: {}".format(database_filepath))
+    X, Y, category_names = load_data(database_filepath)
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.2)
 
-        print("Saving model...\n    MODEL: {}".format(model_filepath))
-        save_model(model, model_filepath)
+    print("Building model...")
 
-        print("Trained model saved!")
+    model = build_model(tuning=if_tuning)
 
-    else:
-        print(
-            "Please provide the filepath of the disaster messages database "
-            "as the first argument and the filepath of the pickle file to "
-            "save the model to as the second argument. \n\nExample: python "
-            "train_classifier.py ../data/DisasterResponse.db classifier.pkl"
-        )
+    print("Training model...")
+    model.fit(X_train, Y_train)
+
+    print("Evaluating model...")
+    evaluate_model(model, X_test, Y_test, category_names)
+
+    print("Saving model...\n    MODEL: {}".format(model_filepath))
+    save_model(model, model_filepath)
+
+    print("Trained model saved!")
 
 
 if __name__ == "__main__":
