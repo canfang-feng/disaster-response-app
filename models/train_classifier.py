@@ -83,6 +83,10 @@ def build_model(tuning=False):
     )
 
     if tuning:
+        print(
+            "start to try other ML algorithms and tune the model,it will take quite long time"
+        )
+
         parameters = [
             {
                 "clf": [RandomForestClassifier()],
