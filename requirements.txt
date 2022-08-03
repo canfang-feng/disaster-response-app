@@ -1,6 +1,6 @@
 pandas==1.4.3
 SQLAlchemy==1.4.39
-scikit-learn==0.20.1
+scikit-learn>=0.20.1
 nltk>=3.7
 plotly>=5.9.0
 Flask>=2.1.3
