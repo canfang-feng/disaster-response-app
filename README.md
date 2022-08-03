@@ -3,8 +3,10 @@ A web app to help emergency response to disaster. Based on ML methods, it classi
 
 
 ## Dependencies
-install the package in pyproject.toml file
-
+Install the python libraries defined in `requirements.txt` 
+```
+pip install -r requirements.txt
+```
 
 ## Run instructions:
 
